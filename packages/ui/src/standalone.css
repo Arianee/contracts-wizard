@@ -87,11 +87,6 @@ body {
   --color-2: var(--solidity-blue-2);
 }
 
-.header .switch.switch-cairo {
-  --color-1: var(--cairo-orange-1);
-  --color-2: var(--cairo-orange-2);
-}
-
 .header .link {
   color: var(--text-color);
   display: block;

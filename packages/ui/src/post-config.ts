@@ -1,5 +1,4 @@
 import type { GenericOptions } from '@openzeppelin/wizard';
-import type { GenericOptions as CairoOptions } from '@openzeppelin/wizard-cairo';
 import { v4 as uuid } from 'uuid';
 
 declare global {
@@ -10,8 +9,8 @@ declare global {
 const instance = uuid();
 
 export type Action = 'copy' | 'remix' | 'download-npm' | 'download-vendored' | 'download-hardhat';
-export type Language = 'solidity' | 'cairo';
+export type Language = 'solidity';
 
-export async function postConfig(opts: Required<GenericOptions> | Required<CairoOptions>, action: Action, language: Language) {
+export async function postConfig(opts: Required<GenericOptions>, action: Action, language: Language) {
   window.gtag?.('event', 'wizard_action', { ...opts, action, wizard_lang: language });
 }

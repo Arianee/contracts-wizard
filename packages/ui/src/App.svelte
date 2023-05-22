@@ -3,6 +3,7 @@
 
     import hljs from './highlightjs';
 
+    import SmartAssetControls from './SmartAssetControls.svelte';
     import ERC20Controls from './ERC20Controls.svelte';
     import ERC721Controls from './ERC721Controls.svelte';
     import ERC1155Controls from './ERC1155Controls.svelte';
@@ -28,7 +29,7 @@
 
     const dispatch = createEventDispatcher();
 
-    export let initialTab: string | undefined = 'ERC20';
+    export let initialTab: string | undefined = 'SmartAsset';
 
     export let tab: Kind = sanitizeKind(initialTab);
     $: {
@@ -125,17 +126,22 @@
   <div class="header flex flex-row justify-between">
     <div class="tab overflow-hidden">
       <OverflowMenu>
+        <button class:selected={tab === 'SmartAsset'} on:click={() => tab = 'SmartAsset'}>
+          SmartAsset
+        </button>
+        <!--
         <button class:selected={tab === 'ERC20'} on:click={() => tab = 'ERC20'}>
           ERC20
         </button>
+        <button class:selected={tab === 'Governor'} on:click={() => tab = 'Governor'}>
+          Governor
+        </button>
+        -->
         <button class:selected={tab === 'ERC721'} on:click={() => tab = 'ERC721'}>
           ERC721
         </button>
         <button class:selected={tab === 'ERC1155'} on:click={() => tab = 'ERC1155'}>
           ERC1155
-        </button>
-        <button class:selected={tab === 'Governor'} on:click={() => tab = 'Governor'}>
-          Governor
         </button>
         <button class:selected={tab === 'Custom'} on:click={() => tab = 'Custom'}>
           Custom
@@ -220,17 +226,22 @@
 
   <div class="flex flex-row gap-4 grow">
     <div class="controls w-64 flex flex-col shrink-0 justify-between">
+      <div class:hidden={tab !== 'SmartAsset'}>
+        <SmartAssetControls bind:opts={allOpts.SmartAsset} />
+      </div>
+      <!--
       <div class:hidden={tab !== 'ERC20'}>
         <ERC20Controls bind:opts={allOpts.ERC20} />
       </div>
+      <div class:hidden={tab !== 'Governor'}>
+        <GovernorControls bind:opts={allOpts.Governor} errors={errors.Governor} />
+      </div>
+      -->
       <div class:hidden={tab !== 'ERC721'}>
         <ERC721Controls bind:opts={allOpts.ERC721} />
       </div>
       <div class:hidden={tab !== 'ERC1155'}>
         <ERC1155Controls bind:opts={allOpts.ERC1155} />
-      </div>
-      <div class:hidden={tab !== 'Governor'}>
-        <GovernorControls bind:opts={allOpts.Governor} errors={errors.Governor} />
       </div>
       <div class:hidden={tab !== 'Custom'}>
         <CustomControls bind:opts={allOpts.Custom} />

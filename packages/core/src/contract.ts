@@ -62,6 +62,7 @@ function maxMutability(a: FunctionMutability, b: FunctionMutability): FunctionMu
 export interface FunctionArgument {
   type: string;
   name: string;
+  location?: 'memory' | 'storage' | 'calldata';
 }
 
 export interface NatspecTag {

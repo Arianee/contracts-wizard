@@ -1,26 +1,25 @@
-import type { ERC721Options } from '../erc721';
 import { accessOptions } from '../set-access-control';
 import { infoOptions } from '../set-info';
 import { upgradeableOptions } from '../set-upgradeable';
+import { SmartAssetOptions, uriStorageOptions } from '../smart-asset';
 import { generateAlternatives } from './alternatives';
 
 const booleans = [true, false];
 
 const blueprint = {
-  name: ['MyToken'],
-  symbol: ['MTK'],
-  baseUri: ['https://example.com/'],
-  enumerable: booleans,
-  uriStorage: booleans,
+  name: ['MySmartAsset'],
+  symbol: ['MSA'],
+  baseUri: [''],
+  uriStorage: uriStorageOptions,
+  updatable: booleans,
+  recoverable: booleans,
   burnable: booleans,
-  pausable: booleans,
-  mintable: booleans,
-  incremental: booleans,
+  soulbound: booleans,
   access: accessOptions,
   upgradeable: upgradeableOptions,
   info: infoOptions,
 };
 
-export function* generateERC721Options(): Generator<Required<ERC721Options>> {
+export function* generateSmartAssetOptions(): Generator<Required<SmartAssetOptions>> {
   yield* generateAlternatives(blueprint);
 }

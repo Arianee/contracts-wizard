@@ -12,10 +12,15 @@ import { printContract } from '../print';
 import { OptionsError } from '../error';
 import { findCover } from '../utils/find-cover';
 import type { Contract } from '../contract';
+import { generateSmartAssetOptions } from './smart-asset';
 
 type Subset = 'all' | 'minimal-cover';
 
 export function* generateOptions(): Generator<GenericOptions> {
+  for (const kindOpts of generateSmartAssetOptions()) {
+    yield { kind: 'SmartAsset', ...kindOpts };
+  }
+
   for (const kindOpts of generateERC20Options()) {
     yield { kind: 'ERC20', ...kindOpts };
   }

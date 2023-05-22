@@ -24,7 +24,7 @@ export function printContract(contract: Contract, opts?: Options): string {
         `pragma solidity ^${SOLIDITY_VERSION};`,
       ],
 
-      contract.imports.map(p => `import "${helpers.transformImport(p)}";`),
+      contract.imports.filter(p => !p.includes('SmartAssetBase')).map(p => `import "${helpers.transformImport(p)}";`),
 
       [
         ...printNatspecTags(contract.natspecTags),
@@ -47,8 +47,9 @@ export function printContract(contract: Contract, opts?: Options): string {
 }
 
 function printInheritance(contract: Contract, { transformName }: Helpers): [] | [string] {
-  if (contract.parents.length > 0) {
-    return ['is ' + contract.parents.map(p => transformName(p.contract.name)).join(', ')];
+  const parents = contract.parents.filter(p => p.contract.name !== 'SmartAssetBase');
+  if (parents.length > 0) {
+    return ['is ' + parents.map(p => transformName(p.contract.name)).join(', ')];
   } else {
     return [];
   }
@@ -232,7 +233,10 @@ function printFunction2(kindedName: string, args: string[], modifiers: string[],
 
 function printArgument(arg: FunctionArgument, { transformName }: Helpers): string {
   const type = /^[A-Z]/.test(arg.type) ? transformName(arg.type) : arg.type;
-  return [type, arg.name].join(' ');
+  const toJoin = [type];
+  if (arg.location) toJoin.push(arg.location);
+  toJoin.push(arg.name);
+  return toJoin.join(' ');
 }
 
 function printNatspecTags(tags: NatspecTag[]): string[] {

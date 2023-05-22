@@ -11,7 +11,6 @@ jobs:
       matrix:
         package:
           - core
-          - core-cairo
 
     runs-on: ubuntu-latest
     steps:
