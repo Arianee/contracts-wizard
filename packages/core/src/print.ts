@@ -1,5 +1,6 @@
 import 'array.prototype.flatmap/auto';
 
+import { isAddress } from '@ethersproject/address';
 import type { Contract, Parent, ContractFunction, FunctionArgument, Value, NatspecTag } from './contract';
 import { Options, Helpers, withHelpers } from './options';
 
@@ -160,6 +161,8 @@ export function printValue(value: Value): string {
     } else {
       throw new Error(`Number not representable (${value})`);
     }
+  } else if (isAddress(value)) {
+    return value;
   } else {
     return JSON.stringify(value);
   }

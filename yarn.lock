@@ -7,13 +7,20 @@
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@arianee/contracts@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@arianee/contracts/-/contracts-0.0.2.tgz"
-  integrity sha512-ir0oj+miUUvnY0Y94eBACTUj8Q3RqiyjHxNFn1M+1bv3reTreJNcjW3RN2CuPrYDd3crQpLdPBb5BVGFZ585cQ==
+"@arianee/contracts-wizard@file:/Users/nm/Documents/GitHub/contracts-wizard/packages/core":
+  version "0.0.3"
+  resolved "file:packages/core"
   dependencies:
-    "@openzeppelin/contracts" "^4.8.3"
-    "@openzeppelin/contracts-upgradeable" "^4.8.3"
+    "@ethersproject/address" "^5.7.0"
+    array.prototype.flatmap "^1.2.4"
+
+"@arianee/contracts@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@arianee/contracts/-/contracts-0.0.3.tgz"
+  integrity sha512-4r7aX4B/04kJW+B/dXAttPU/aGrEClQjHGr6MUTjjL5MVU7Njqlx9Q9bhM9N7Z4wRrQVgT6juUvDNUJy2vGn8g==
+  dependencies:
+    "@openzeppelin/contracts" "4.8.3"
+    "@openzeppelin/contracts-upgradeable" "4.8.3"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.21.4"
@@ -697,21 +704,15 @@
     "@nomicfoundation/solidity-analyzer-win32-ia32-msvc" "0.1.1"
     "@nomicfoundation/solidity-analyzer-win32-x64-msvc" "0.1.1"
 
-"@openzeppelin/contracts-upgradeable@^4.8.3", "@openzeppelin/contracts-upgradeable@4.8.3":
+"@openzeppelin/contracts-upgradeable@4.8.3":
   version "4.8.3"
   resolved "https://registry.npmjs.org/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.8.3.tgz"
   integrity sha512-SXDRl7HKpl2WDoJpn7CK/M9U4Z8gNXDHHChAKh0Iz+Wew3wu6CmFYBeie3je8V0GSXZAIYYwUktSrnW/kwVPtg==
 
-"@openzeppelin/contracts@^4.8.3", "@openzeppelin/contracts@4.8.3":
+"@openzeppelin/contracts@4.8.3":
   version "4.8.3"
   resolved "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-4.8.3.tgz"
   integrity sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==
-
-"@openzeppelin/wizard@file:/Users/nm/Documents/GitHub/contracts-wizard/packages/core":
-  version "0.2.3"
-  resolved "file:packages/core"
-  dependencies:
-    array.prototype.flatmap "^1.2.4"
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -2988,13 +2989,6 @@ highlight.js@^11.0.0:
   version "11.8.0"
   resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-11.8.0.tgz"
   integrity sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==
-
-highlightjs-cairo@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/highlightjs-cairo/-/highlightjs-cairo-0.2.0.tgz"
-  integrity sha512-gO0934JCapWreOPAKsjC9RNUVV6cwSDrk3YMFaCjjeIKr1iAR1yi/ssevNgwTKWnkAVM1O7AAu4CmE/4qaBREQ==
-  dependencies:
-    highlight.js "^11.0.0"
 
 highlightjs-solidity@^2.0.0:
   version "2.0.6"
@@ -5771,7 +5765,6 @@ typescript@^5.0.3:
   dependencies:
     file-saver "^2.0.5"
     highlight.js "^11.0.0"
-    highlightjs-cairo "^0.2.0"
     highlightjs-solidity "^2.0.0"
     sirv-cli "^2.0.0"
     tippy.js "^6.3.1"

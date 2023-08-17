@@ -1,18 +1,22 @@
-# OpenZeppelin Contracts Wizard for Solidity
+# Arianee Contracts Wizard for Solidity
+[![NPM Package](https://img.shields.io/npm/v/@arianee/contracts-wizard?color=4db9b4)](https://www.npmjs.com/package/@arianee/contracts-wizard)
 
-[![NPM Package](https://img.shields.io/npm/v/@openzeppelin/wizard?color=%234e5de4)](https://www.npmjs.com/package/@openzeppelin/wizard)
+<p align="center">
+  <img width="125" height="125" src="https://storage.googleapis.com/arn3-static-resources/arianee/arianee_hardhat.png">
+</p>
 
-Interactively build a contract out of components from OpenZeppelin Contracts. Provide parameters and desired features for the kind of contract that you want, and the Wizard will generate all of the code necessary. The resulting code is ready to be compiled and deployed, or it can serve as a starting point and customized further with application specific logic.
+Interactively build a contract out of components from Arianee Contracts. Provide parameters and desired features for the kind of contract that you want, and the Wizard will generate all of the code necessary. The resulting code is ready to be compiled and deployed, or it can serve as a starting point and customized further with application specific logic.
 
-This package provides a programmatic API. For a web interface, see https://wizard.openzeppelin.com
+This package provides a programmatic API. For a web interface, see https://wizard.arianee.com
 
 ### Installation
 
-`npm install @openzeppelin/wizard`
+`npm install @arianee/contracts-wizard`
 
 ### Contract types
 
 The following contract types are supported:
+- `smartAsset`
 - `erc20`
 - `erc721`
 - `erc1155`
@@ -24,6 +28,9 @@ Each contract type has functions/constants as defined below.
 ### Functions
 
 #### `print`
+```js
+function print(opts?: SmartAssetOptions): string
+```
 ```js
 function print(opts?: ERC20Options): string
 ```
@@ -42,6 +49,9 @@ function print(opts?: CustomOptions): string
 Returns a string representation of a contract generated using the provided options. If `opts` is not provided, uses [`defaults`](#defaults).
 
 #### `defaults`
+```js
+const defaults: Required<SmartAssetOptions>
+```
 ```js
 const defaults: Required<ERC20Options>
 ```
@@ -79,31 +89,26 @@ Whether any of the provided options require access control to be enabled. If thi
 
 ### Examples
 
-Import the contract type(s) that you want to use from the `@openzeppelin/wizard` package:
+Import the contract type(s) that you want to use from the `@arianee/contracts-wizard` package:
 
 ```js
-import { erc20 } from '@openzeppelin/wizard';
+import { smartAsset } from '@arianee/contracts-wizard';
 ```
 
-To generate the source code for an ERC20 contract with all of the default settings:
+To generate the source code for a SmartAsset contract with all of the default settings:
 ```js
-const contract = erc20.print();
+const contract = smartAsset.print();
 ```
 
-To generate the source code for an ERC20 contract with a custom name and symbol, along with some custom settings:
+To generate the source code for an SmartAsset contract with a custom name and symbol, along with some custom settings:
 ```js
-const contract = erc20.print({
-  name: 'ExampleToken',
-  symbol: 'ETK',
+const contract = smartAsset.print({
+  name: 'MySmartAsset',
+  symbol: 'MSA',
+  updatable: true,
   burnable: true,
-  premint: '1000000',
 });
 ```
 
-To generate the source code for an ERC20 contract with all of the defaults but is upgradeable using the UUPS proxy pattern:
-```js
-const contract = erc20.print({
-  ...erc20.defaults,
-  upgradeable: 'uups',
-});
-```
+___
+This package is a fork of [OpenZeppelin Contracts Wizard for Solidity](https://github.com/OpenZeppelin/contracts-wizard).

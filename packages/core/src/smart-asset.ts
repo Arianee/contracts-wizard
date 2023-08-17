@@ -15,23 +15,31 @@ export type UriStorage = (typeof uriStorageOptions)[number];
 export interface SmartAssetOptions extends CommonOptions {
   name: string;
   symbol: string;
+  rulesManager: string;
+  creditManager: string;
+  trustedForwarder: string;
   baseUri: string;
   uriStorage: UriStorage;
   updatable?: boolean;
   recoverable?: boolean;
   burnable?: boolean;
   soulbound?: boolean;
+  shared?: boolean;
 }
 
 export const defaults: Required<SmartAssetOptions> = {
   name: "MySmartAsset",
   symbol: "MSA",
+  rulesManager: "0x0000000000000000000000000000000000000000",
+  creditManager: "0x0000000000000000000000000000000000000000",
+  trustedForwarder: "0x0000000000000000000000000000000000000000",
   baseUri: "",
   uriStorage: "baseURI",
   updatable: false,
   recoverable: false,
   burnable: false,
   soulbound: false,
+  shared: false,
   access: commonDefaults.access,
   upgradeable: commonDefaults.upgradeable,
   info: commonDefaults.info,
@@ -45,6 +53,7 @@ function withDefaults(opts: SmartAssetOptions): Required<SmartAssetOptions> {
     recoverable: opts.recoverable ?? defaults.recoverable,
     burnable: opts.burnable ?? defaults.burnable,
     soulbound: opts.soulbound ?? defaults.soulbound,
+    shared: opts.shared ?? defaults.shared
   };
 }
 
@@ -65,7 +74,7 @@ export function buildSmartAsset(opts: SmartAssetOptions): Contract {
 
   const { info } = allOpts;
 
-  addBase(c, allOpts.name, allOpts.symbol, allOpts.uriStorage, allOpts.baseUri);
+  addBase(c, allOpts.name, allOpts.symbol, allOpts.rulesManager, allOpts.creditManager, allOpts.trustedForwarder, allOpts.uriStorage, allOpts.baseUri, allOpts.shared);
 
   if (allOpts.updatable) {
     addUpdatable(c);
@@ -94,15 +103,19 @@ function addBase(
   c: ContractBuilder,
   name: string,
   symbol: string,
+  rulesManager: string,
+  creditManager: string,
+  trustedForwarder: string,
   uriStorage: UriStorage,
-  baseUri: string
+  baseUri: string,
+  shared: boolean
 ) {
   c.addParent(
     {
       name: "SmartAssetBase",
       path: `${arianeeContractsBasePath}/SmartAsset/SmartAssetBase.sol`,
     },
-    [name, symbol]
+    [name, symbol, rulesManager, creditManager, trustedForwarder]
   );
 
   c.addOverride("ERC721", functions._burn);
@@ -116,6 +129,9 @@ function addBase(
   c.addOverride("SmartAssetBase", functions._beforeTokenTransfer);
   c.addOverride("SmartAssetBase", functions._transfer);
   c.addOverride("SmartAssetBase", functions._afterFirstTokenTransfer);
+  c.addOverride("SmartAssetBase", functions._afterTokenTransfer);
+  c.addOverride("SmartAssetBase", functions._msgSender);
+  c.addOverride("SmartAssetBase", functions._msgData);
 
   switch (uriStorage) {
     case "overridableBaseURI":
@@ -140,6 +156,9 @@ function addBase(
         functions._beforeTokenTransfer
       );
       c.addOverride("SmartAssetURIStorageOverridable", functions._baseURI);
+      c.addOverride("SmartAssetURIStorageOverridable", functions._afterTokenTransfer);
+      c.addOverride("SmartAssetURIStorageOverridable", functions._msgSender);
+      c.addOverride("SmartAssetURIStorageOverridable", functions._msgData);
       break;
 
     default: {
@@ -154,6 +173,11 @@ function addBase(
       c.addOverride("SmartAssetURIStorage", functions._baseURI);
       break;
     }
+  }
+
+  if (shared) {
+    c.addOverride("AccessControl", functions.hasRole);
+    c.setFunctionBody(["// WARNING: This SmartAsset contract is \"shared\" meaning that everyone is able to mint.\n        // The MINTER_ROLE is intentionally bypassed in this contract.\n         if (role == MINTER_ROLE) {\n            return true;\n        } else {\n            return super.hasRole(role, account);\n        }"], functions.hasRole);
   }
 }
 
@@ -209,6 +233,7 @@ const functions = defineFunctions({
       { name: "signature", type: "bytes", location: "calldata" },
       { name: "newOwner", type: "address" },
       { name: "keepTransferKey", type: "bool" },
+      { name: "walletProvider", type: "address" },
     ],
   },
 
@@ -261,6 +286,16 @@ const functions = defineFunctions({
     args: [{ name: "tokenId", type: "uint256" }],
   },
 
+  _afterTokenTransfer: {
+    kind: "internal" as const,
+    args: [
+      { name: "from", type: "address" },
+      { name: "to", type: "address" },
+      { name: "tokenId", type: "uint256" },
+      { name: "batchSize", type: "uint256" },
+    ],
+  },
+
   _burn: {
     kind: "internal" as const,
     args: [{ name: "tokenId", type: "uint256" }],
@@ -272,4 +307,28 @@ const functions = defineFunctions({
     args: [],
     returns: ["string memory"],
   },
+
+  _msgSender: {
+    kind: "internal" as const,
+    mutability: "view" as const,
+    args: [],
+    returns: ["address"],
+  },
+
+  _msgData: {
+    kind: "internal" as const,
+    mutability: "view" as const,
+    args: [],
+    returns: ["bytes calldata"],
+  },
+
+  hasRole: {
+    kind: "public" as const,
+    mutability: "view" as const,
+    args: [
+      { name: "role", type: "bytes32" },
+      { name: "account", type: "address" },
+    ],
+    returns: ["bool"],
+  }
 });

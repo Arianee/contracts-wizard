@@ -1,7 +1,7 @@
 {
-  "name": "@openzeppelin/wizard",
-  "version": "0.2.3",
-  "description": "A boilerplate generator to get started with OpenZeppelin Contracts",
+  "name": "@arianee/contracts-wizard",
+  "version": "0.0.5",
+  "description": "A boilerplate generator to get started with Arianee Contracts",
   "license": "MIT",
   "repository": "github:OpenZeppelin/contracts-wizard",
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
     "update-env": "rm ./src/environments/hardhat/package-lock.json && npm install --package-lock-only --prefix ./src/environments/hardhat && rm ./src/environments/hardhat/upgradeable/package-lock.json && npm install --package-lock-only --prefix ./src/environments/hardhat/upgradeable"
   },
   "devDependencies": {
-    "@arianee/contracts": "^0.0.2",
+    "@arianee/contracts": "^0.0.3",
     "@openzeppelin/contracts": "4.8.3",
     "@openzeppelin/contracts-upgradeable": "4.8.3",
     "@types/node": "^10.17.51",
@@ -35,6 +35,7 @@
     "typescript": "^4.9.0"
   },
   "dependencies": {
+    "@ethersproject/address": "^5.7.0",
     "array.prototype.flatmap": "^1.2.4"
   }
 }
