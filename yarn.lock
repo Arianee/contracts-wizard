@@ -8,16 +8,16 @@
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
 "@arianee/contracts-wizard@file:/Users/nm/Documents/GitHub/contracts-wizard/packages/core":
-  version "0.0.3"
+  version "0.0.5"
   resolved "file:packages/core"
   dependencies:
     "@ethersproject/address" "^5.7.0"
     array.prototype.flatmap "^1.2.4"
 
-"@arianee/contracts@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@arianee/contracts/-/contracts-0.0.3.tgz"
-  integrity sha512-4r7aX4B/04kJW+B/dXAttPU/aGrEClQjHGr6MUTjjL5MVU7Njqlx9Q9bhM9N7Z4wRrQVgT6juUvDNUJy2vGn8g==
+"@arianee/contracts@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@arianee/contracts/-/contracts-0.0.6.tgz"
+  integrity sha512-4aXz4Zxf+lDFRahHgwAfOe7q64mLSy9eVYoPJASHZgHo0iB2r+axVWHpzSTO2RvhZ5+dC3At4T3NHoyjdwk+bg==
   dependencies:
     "@openzeppelin/contracts" "4.8.3"
     "@openzeppelin/contracts-upgradeable" "4.8.3"
