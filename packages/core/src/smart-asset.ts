@@ -178,6 +178,9 @@ function addBase(
   if (shared) {
     c.addOverride("AccessControl", functions.hasRole);
     c.setFunctionBody(["// WARNING: This SmartAsset contract is \"shared\" meaning that everyone is able to mint.\n        // The MINTER_ROLE is intentionally bypassed in this contract.\n         if (role == MINTER_ROLE) {\n            return true;\n        } else {\n            return super.hasRole(role, account);\n        }"], functions.hasRole);
+
+    c.addOverride("SmartAssetBase", functions.isShared);
+    c.setFunctionBody(["// See {SmartAssetBase-isShared}.\n        return true;"], functions.isShared);
   }
 }
 
@@ -330,5 +333,12 @@ const functions = defineFunctions({
       { name: "account", type: "address" },
     ],
     returns: ["bool"],
-  }
+  },
+
+  isShared: {
+    kind: "public" as const,
+    mutability: "pure" as const,
+    args: [],
+    returns: ["bool"],
+  },
 });
