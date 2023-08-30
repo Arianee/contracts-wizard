@@ -1,23 +1,24 @@
 import JSZip from 'jszip';
 
-import type { Contract, Parent, ContractFunction, FunctionArgument } from './contract';
+import type { Contract } from './contract';
 import { printContract } from './print';
 import { reachable } from './utils/transitive-closure';
 
-import contracts from '../openzeppelin-contracts';
+import ozContracts from '../openzeppelin-contracts';
+import arianeeContracts from '../arianee-contracts';
 import { withHelpers } from './options';
 
 const readme = (variant: string) => `\
 # OpenZeppelin Contracts
 
-The files in this directory were sourced unmodified from OpenZeppelin Contracts v${contracts.version}.
+The files in this directory were sourced unmodified from OpenZeppelin Contracts v${ozContracts.version}.
 
 They are not meant to be edited.
 
 The originals can be found on [GitHub] and [npm].
 
-[GitHub]: https://github.com/OpenZeppelin/openzeppelin-contracts${variant}/tree/v${contracts.version}
-[npm]: https://www.npmjs.com/package/@openzeppelin/contracts${variant}/v/${contracts.version}
+[GitHub]: https://github.com/OpenZeppelin/openzeppelin-contracts${variant}/tree/v${ozContracts.version}
+[npm]: https://www.npmjs.com/package/@openzeppelin/contracts${variant}/v/${ozContracts.version}
 
 Generated with OpenZeppelin Contracts Wizard (https://zpl.in/wizard).
 `;
@@ -30,7 +31,7 @@ export function zipContract(c: Contract): JSZip {
 
   const dependencies = {
     [fileName]: c.imports.map(i => transformImport(i)),
-    ...contracts.dependencies,
+    ...ozContracts.dependencies,
   };
 
   const allImports = reachable(dependencies, fileName);
@@ -41,8 +42,10 @@ export function zipContract(c: Contract): JSZip {
 
   zip.file(`@openzeppelin/contracts${contractsVariant}/README.md`, readme(contractsVariant));
 
+  const sources = { ...ozContracts.sources, ...arianeeContracts.sources };
+
   for (const importPath of allImports) {
-    const source = contracts.sources[importPath];
+    const source = sources[importPath];
     if (source === undefined) {
       throw new Error(`Source for ${importPath} not found`);
     }

@@ -2,13 +2,13 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import hre from 'hardhat';
 import type { BuildInfo } from 'hardhat/types';
-import type { SourceUnit } from 'solidity-ast';
 import { findAll } from 'solidity-ast/utils';
 import { rimraf } from 'rimraf';
-import { promisify } from 'util';
-import { version } from "@openzeppelin/contracts/package.json";
+import { version as ozVersion } from "@openzeppelin/contracts/package.json";
+import { version as arianeeVersion } from "@arianee/contracts/package.json";
 
 import type { OpenZeppelinContracts } from '../../openzeppelin-contracts';
+import type { ArianeeContracts } from '../../arianee-contracts';
 import { writeGeneratedSources } from '../generate/sources';
 import { mapValues } from '../utils/map-values';
 import { transitiveClosure } from '../utils/transitive-closure';
@@ -19,18 +19,20 @@ async function main() {
   await writeGeneratedSources(generatedSourcesPath, 'minimal-cover');
   await hre.run('compile');
 
-  const dependencies: Record<string, Set<string>> = {};
-  const sources: Record<string, string> = {};
+  const ozDependencies: Record<string, Set<string>> = {};
+  const ozSources: Record<string, string> = {};
+
+  const arianeeDependencies: Record<string, Set<string>> = {};
+  const arianeeSources: Record<string, string> = {};
 
   for (const buildInfoPath of await hre.artifacts.getBuildInfoPaths()) {
     const buildInfo: BuildInfo = JSON.parse(
       await fs.readFile(buildInfoPath, 'utf8'),
     );
 
-    /*
     for (const [sourceFile, { ast }] of Object.entries(buildInfo.output.sources)) {
       if (sourceFile.startsWith('@openzeppelin/contracts')) {
-        const sourceDependencies = (dependencies[sourceFile] ??= new Set());
+        const sourceDependencies = (ozDependencies[sourceFile] ??= new Set());
         for (const imp of findAll('ImportDirective', ast)) {
           sourceDependencies.add(imp.absolutePath);
         }
@@ -39,14 +41,13 @@ async function main() {
 
     for (const [sourceFile, { content }] of Object.entries(buildInfo.input.sources)) {
       if (sourceFile.startsWith('@openzeppelin/contracts')) {
-        sources[sourceFile] = content;
+        ozSources[sourceFile] = content;
       }
     }
-    */
 
     for (const [sourceFile, { ast }] of Object.entries(buildInfo.output.sources)) {
       if (sourceFile.startsWith('@arianee/contracts')) {
-        const sourceDependencies = (dependencies[sourceFile] ??= new Set());
+        const sourceDependencies = (arianeeDependencies[sourceFile] ??= new Set());
         for (const imp of findAll('ImportDirective', ast)) {
           sourceDependencies.add(imp.absolutePath);
         }
@@ -55,18 +56,26 @@ async function main() {
 
     for (const [sourceFile, { content }] of Object.entries(buildInfo.input.sources)) {
       if (sourceFile.startsWith('@arianee/contracts')) {
-        sources[sourceFile] = content;
+        arianeeSources[sourceFile] = content;
       }
     }
   }
 
-  const contracts: OpenZeppelinContracts = {
-    version,
-    sources,
-    dependencies: mapValues(transitiveClosure(dependencies), d => Array.from(d)),
+  const ozContracts: OpenZeppelinContracts = {
+    version: ozVersion,
+    sources: ozSources,
+    dependencies: mapValues(transitiveClosure(ozDependencies), d => Array.from(d)),
   };
 
-  await fs.writeFile('openzeppelin-contracts.json', JSON.stringify(contracts, null, 2));
+  await fs.writeFile('openzeppelin-contracts.json', JSON.stringify(ozContracts, null, 2));
+
+  const arianeeContracts: ArianeeContracts = {
+    version: arianeeVersion,
+    sources: arianeeSources,
+    dependencies: mapValues(transitiveClosure(arianeeDependencies), d => Array.from(d)),
+  };
+
+  await fs.writeFile('arianee-contracts.json', JSON.stringify(arianeeContracts, null, 2));
 }
 
 main().catch(e => {

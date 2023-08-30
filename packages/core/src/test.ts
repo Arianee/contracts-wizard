@@ -4,11 +4,11 @@ import path from 'path';
 
 import { generateSources, writeGeneratedSources } from './generate/sources';
 import type { GenericOptions } from './build-generic';
-import { custom, erc1155, erc20, erc721, governor } from './api';
+import { custom, erc1155, erc20, erc721, governor, smartAsset } from './api';
 
 test('result compiles', async t => {
   const generatedSourcesPath = path.join(hre.config.paths.sources, 'generated');
-  await writeGeneratedSources(generatedSourcesPath, 'all');
+  await writeGeneratedSources(generatedSourcesPath, 'all', ['SmartAsset']); // We only care about SmartAsset for now 
 
   // We only want to check that contracts compile and we don't care about any
   // of the outputs. Setting empty outputSelection causes compilation to go a
@@ -23,6 +23,8 @@ test('result compiles', async t => {
 
 function isAccessControlRequired(opts: GenericOptions) {
   switch(opts.kind) {
+    case 'SmartAsset':
+      return smartAsset.isAccessControlRequired(opts);
     case 'ERC20':
       return erc20.isAccessControlRequired(opts);
     case 'ERC721':

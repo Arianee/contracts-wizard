@@ -134,6 +134,19 @@ export class ContractBuilder implements Contract {
     }
   }
 
+  removeOverride(parent: string, baseFn: BaseFunction) {
+    const signature = this.getSignature(baseFn);
+    const fn = this.getFn(baseFn);
+    fn.override.delete(parent);
+  }
+
+  getFn(baseFn: BaseFunction): ContractFunction {
+    const signature = this.getSignature(baseFn);
+    const fn = this.functionMap.get(signature);
+    if (!fn) throw new Error(`Function ${signature} not found in contract ${this.name}`);
+    return fn;
+  }
+
   addModifier(modifier: string, baseFn: BaseFunction) {
     const fn = this.addFunction(baseFn);
     fn.modifiers.push(modifier);
@@ -144,8 +157,12 @@ export class ContractBuilder implements Contract {
     this.natspecTags.push({ key, value });
   }
 
+  private getSignature(baseFn: BaseFunction): string {
+    return [baseFn.name, '(', ...baseFn.args.map(a => a.name), ')'].join('');
+  }
+
   private addFunction(baseFn: BaseFunction): ContractFunction {
-    const signature = [baseFn.name, '(', ...baseFn.args.map(a => a.name), ')'].join('');
+    const signature = this.getSignature(baseFn);
     const got = this.functionMap.get(signature);
     if (got !== undefined) {
       return got;

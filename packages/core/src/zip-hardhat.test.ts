@@ -88,7 +88,7 @@ async function extractAndRunPackage(zip: JSZip, t: ExecutionContext<unknown>) {
     }
 
     const exec = util.promisify(child.exec);
-    const result = await exec(`cd "${tempFolder}" && npm config set scripts-prepend-node-path auto && npm install && npm test && npx hardhat run scripts/deploy.ts`);
+    const result = await exec(`cd "${tempFolder}" && npm install && npm test && npx hardhat run scripts/deploy.ts`); // "npm config set scripts-prepend-node-path auto" has been removed as it's not a supported option anymore
     t.regex(result.stdout, /1 passing/);
     t.regex(result.stdout, /deployed to/);
   } finally {
