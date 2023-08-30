@@ -18,7 +18,7 @@ const blueprint = {
   burnable: booleans,
   soulbound: booleans,
   shared: booleans,
-  access: accessOptions,
+  access: [false] as const,
   upgradeable: [false] as const,
   info: infoOptions,
 };

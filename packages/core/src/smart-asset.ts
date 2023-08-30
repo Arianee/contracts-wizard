@@ -92,6 +92,7 @@ export function buildSmartAsset(opts: SmartAssetOptions): Contract {
     addSoulbound(c);
   }
 
+  trimOverrides(c);
   setInfo(c, info);
 
   return c;
@@ -217,7 +218,42 @@ function addSoulbound(c: ContractBuilder) {
 
   c.addOverride("SmartAssetSoulbound", functions.setTokenTransferKey);
   c.addOverride("SmartAssetSoulbound", functions.requestToken);
-  c.addOverride("SmartAssetSoulbound", functions._transfer);
+  c.addOverride("SmartAssetSoulbound",functions._transfer);
+} 
+
+function trimOverrides(c: ContractBuilder) {
+  if (parentsAre(c, "SmartAssetBase", "SmartAssetURIStorage")) {
+    c.removeOverride("ERC721", functions._baseURI);
+  }
+
+  if (parentsAre(c, "SmartAssetBase", "SmartAssetURIStorageOverridable", "SmartAssetSoulbound")) {
+    c.removeOverride("SmartAssetBase", functions._transfer);
+  }
+
+  if (parentsAre(c, "SmartAssetBase", "SmartAssetURIStorageOverridable")) {
+    c.removeOverride("ERC721", functions._burn);
+    c.removeOverride("ERC721", functions._baseURI);
+    c.removeOverride("ERC721", functions.tokenURI);
+    c.removeOverride("SmartAssetBase", functions.hydrateToken);
+    c.removeOverride("SmartAssetBase", functions.supportsInterface);
+    c.removeOverride("SmartAssetBase", functions._beforeTokenTransfer);
+    c.removeOverride("SmartAssetBase", functions._afterTokenTransfer);
+    c.removeOverride("SmartAssetBase", functions._msgSender);
+    c.removeOverride("SmartAssetBase", functions._msgData);
+  }
+
+  if (parentsAre(c, "SmartAssetBase", "SmartAssetURIStorageOverridable", "SmartAssetRecoverable")) {
+    c.removeOverride("ERC721", functions._burn);
+    c.removeOverride("SmartAssetBase", functions.hydrateToken);
+  }
+}
+
+function parentsContainsAll(c: ContractBuilder, ...names: string[]): boolean {
+  return names.every((name) => c.parents.some((p) => p.contract.name === name));
+}
+
+function parentsAre(c: ContractBuilder, ...names: string[]): boolean {
+  return c.parents.every((p) => names.includes(p.contract.name));
 }
 
 const functions = defineFunctions({
