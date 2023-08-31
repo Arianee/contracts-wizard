@@ -97,7 +97,7 @@ export default [
     },
     plugins: [
       // Generate openzeppelin-contracts.js data file
-      onStartRun(...'yarn --cwd ../core prepare'.split(' ')),
+      onStartRun(...'npm --prefix ../core run prepare'.split(' ')),
 
       svelte(await import('./svelte.config.js')),
 
