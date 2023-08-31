@@ -10,8 +10,7 @@ jobs:
       image: ubuntu-2004:2023.04.2
       resource_class: medium
     steps:
-      - run: echo $(ls ~/contracts-wizard)
-      - run: echo $(ls ~/contracts-wizard/packages/core)
+      - run: rm -rf ~/contracts-wizard
       - node/install:
           node-version: '18.15'
       - checkout:
