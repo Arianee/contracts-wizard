@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout:
           path: ~/contracts-wizard
-      - node/install-packages
+      - node/install-packages:
           app-dir: ~/contracts-wizard
       - run:
           name: Run tests
