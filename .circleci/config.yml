@@ -10,12 +10,14 @@ jobs:
       image: ubuntu-2004:2023.04.2
       resource_class: medium
     steps:
+      - run: echo $(ls ~/contracts-wizard)
+      - run: echo $(ls ~/contracts-wizard/packages/core)
       - node/install:
           node-version: '18.15'
       - checkout:
-          path: ~/contracts-wizards
+          path: ~/contracts-wizard
       - node/install-packages:
-          app-dir: ~/contracts-wizards
+          app-dir: ~/contracts-wizard
       - run:
           name: Run tests
           command: npm run test
