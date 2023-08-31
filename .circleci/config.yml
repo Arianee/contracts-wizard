@@ -12,10 +12,9 @@ jobs:
     steps:
       - checkout:
           path: ~/contracts-wizard
-      - run:
-          command: echo $(ls)
       - node/install-packages:
           app-dir: ~/contracts-wizard
+          node-version: '18.15'
       - run:
           name: Run tests
           command: npm run test
