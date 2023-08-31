@@ -12,6 +12,8 @@ jobs:
     steps:
       - checkout:
           path: ~/contracts-wizard
+      - run:
+          command: echo $(ls)
       - node/install-packages:
           app-dir: ~/contracts-wizard
       - run:
