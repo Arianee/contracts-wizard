@@ -122,10 +122,11 @@ export async function writeGeneratedSources(
   dir: string,
   subset: Subset,
   kinds?: Kind[]
-): Promise<void> {
+): Promise<GeneratedSource[]> {
   await fs.mkdir(dir, { recursive: true });
-
-  for (const { id, source } of generateSources(subset, kinds)) {
+  const sources = Array.from(generateSources(subset, kinds));
+  for (const { id, source } of sources) {
     await fs.writeFile(path.format({ dir, name: id, ext: ".sol" }), source);
   }
+  return sources;
 }

@@ -20,6 +20,6 @@ export { OptionsError } from './error';
 export type { Kind } from './kind';
 export { sanitizeKind } from './kind';
 
-export { generateSources } from './generate/sources';
+export { generateSources, writeGeneratedSources } from './generate/sources';
 
 export { smartAsset, erc20, erc721, erc1155, governor, custom } from './api';
