@@ -6,10 +6,10 @@ Arianee Contracts Wizard is a web application to interactively build a contract 
 
 ## Development
 
-Install dependencies with `yarn install`.
+Install dependencies with `npm install`.
 
 `packages/core` contains the code generation logic for Solidity.
-`packages/ui` is the interface built in Svelte. `yarn dev` spins up a local server to develop the UI.
+`packages/ui` is the interface built in Svelte. `npm run dev` spins up a local server to develop the UI.
 
 ## Embedding
 

@@ -1,4 +1,4 @@
-import type { GenericOptions } from '@openzeppelin/wizard';
+import type { GenericOptions } from '@arianee/contracts-wizard';
 import { v4 as uuid } from 'uuid';
 
 declare global {
