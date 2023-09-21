@@ -9,7 +9,7 @@ import { buildCustom } from './custom';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
-import util, { promisify } from 'util';
+import util from 'util';
 import child from "child_process";
 import type { Contract } from './contract';
 import { rimraf } from 'rimraf';

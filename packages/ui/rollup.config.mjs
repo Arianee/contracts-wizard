@@ -116,7 +116,7 @@ export default [
       resolve({
         browser: true,
         dedupe: ['svelte'],
-        mainFields: ['ts:main', 'module', 'main'],
+        mainFields: ['ts:browser', 'module', 'browser'],
         preferBuiltins: false,
       }),
 

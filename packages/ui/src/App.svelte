@@ -3,11 +3,14 @@
 
     import hljs from './highlightjs';
 
-    import SmartAssetControls from './SmartAssetControls.svelte';
+    /*
     import ERC20Controls from './ERC20Controls.svelte';
+    import GovernorControls from './GovernorControls.svelte';
+    */
+
+    import SmartAssetControls from './SmartAssetControls.svelte';
     import ERC721Controls from './ERC721Controls.svelte';
     import ERC1155Controls from './ERC1155Controls.svelte';
-    import GovernorControls from './GovernorControls.svelte';
     import CustomControls from './CustomControls.svelte';
     import CopyIcon from './icons/CopyIcon.svelte';
     import CheckIcon from './icons/CheckIcon.svelte';
@@ -19,8 +22,8 @@
     import OverflowMenu from './OverflowMenu.svelte';
     import Tooltip from './Tooltip.svelte';
 
-    import type { KindedOptions, Kind, Contract, OptionsErrorMessages } from '@openzeppelin/wizard';
-    import { ContractBuilder, buildGeneric, printContract, sanitizeKind, OptionsError } from '@openzeppelin/wizard';
+    import type { KindedOptions, Kind, Contract, OptionsErrorMessages } from '@arianee/contracts-wizard';
+    import { ContractBuilder, buildGeneric, printContract, sanitizeKind, OptionsError } from '@arianee/contracts-wizard';
     import { postConfig } from './post-config';
     import { remixURL } from './remix';
 
@@ -80,7 +83,7 @@
       e.preventDefault();
       if ((e.target as Element)?.classList.contains('disabled')) return;
 
-      const { printContractVersioned } = await import('@openzeppelin/wizard/print-versioned');
+      const { printContractVersioned } = await import('@arianee/contracts-wizard/print-versioned');
 
       const versionedCode = printContractVersioned(contract);
       window.open(remixURL(versionedCode, !!opts?.upgradeable).toString(), '_blank');
@@ -97,7 +100,7 @@
       }
     };
 
-    const zipModule = import('@openzeppelin/wizard/zip');
+    const zipModule = import('@arianee/contracts-wizard/zip');
 
     const downloadVendoredHandler = async () => {
       const { zipContract } = await zipModule;
@@ -109,7 +112,7 @@
       }
     };
 
-    const zipEnvModule = import('@openzeppelin/wizard/zip-env');
+    const zipEnvModule = import('@arianee/contracts-wizard/zip-env');
 
     const downloadHardhatHandler = async () => {
       const { zipHardhat } = await zipEnvModule;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import HelpTooltip from './HelpTooltip.svelte';
-  import type { UriStorage } from '@openzeppelin/wizard';
+  import type { UriStorage } from '@arianee/contracts-wizard';
   
   export let uriStorage: UriStorage;
 </script>
