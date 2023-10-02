@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Info } from '@openzeppelin/wizard';
-  import { infoDefaults } from '@openzeppelin/wizard';
+  import type { Info } from '@arianee/contracts-wizard';
+  import { infoDefaults } from '@arianee/contracts-wizard';
 
   import HelpTooltip from './HelpTooltip.svelte';
 

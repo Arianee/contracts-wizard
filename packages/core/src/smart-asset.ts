@@ -98,7 +98,7 @@ export function buildSmartAsset(opts: SmartAssetOptions): Contract {
   return c;
 }
 
-const arianeeContractsBasePath = "@arianee/contracts";
+const arianeeContractsBasePath = "@arianee/contracts/solidity";
 
 function addBase(
   c: ContractBuilder,
@@ -126,7 +126,6 @@ function addBase(
   c.addOverride("SmartAssetBase", functions.setTokenTransferKey);
   c.addOverride("SmartAssetBase", functions.requestToken);
   c.addOverride("SmartAssetBase", functions.hydrateToken);
-  c.addOverride("SmartAssetBase", functions.supportsInterface);
   c.addOverride("SmartAssetBase", functions._beforeTokenTransfer);
   c.addOverride("SmartAssetBase", functions._transfer);
   c.addOverride("SmartAssetBase", functions._afterFirstTokenTransfer);
@@ -146,10 +145,6 @@ function addBase(
 
       c.addOverride("SmartAssetURIStorageOverridable", functions.hydrateToken);
       c.addOverride("SmartAssetURIStorageOverridable", functions.tokenURI);
-      c.addOverride(
-        "SmartAssetURIStorageOverridable",
-        functions.supportsInterface
-      );
       c.addOverride("SmartAssetURIStorageOverridable", functions._transfer);
       c.addOverride("SmartAssetURIStorageOverridable", functions._burn);
       c.addOverride(
@@ -160,6 +155,10 @@ function addBase(
       c.addOverride("SmartAssetURIStorageOverridable", functions._afterTokenTransfer);
       c.addOverride("SmartAssetURIStorageOverridable", functions._msgSender);
       c.addOverride("SmartAssetURIStorageOverridable", functions._msgData);
+      c.addOverride(
+        "SmartAssetURIStorageOverridable",
+        functions.supportsInterface
+      );
       break;
 
     default: {
@@ -172,6 +171,7 @@ function addBase(
       );
 
       c.addOverride("SmartAssetURIStorage", functions._baseURI);
+      c.addOverride("SmartAssetURIStorage", functions.supportsInterface);
       break;
     }
   }
@@ -190,6 +190,8 @@ function addUpdatable(c: ContractBuilder) {
     name: "SmartAssetUpdatable",
     path: `${arianeeContractsBasePath}/SmartAsset/SmartAssetUpdatable.sol`,
   });
+
+  c.addOverride("SmartAssetUpdatable", functions.supportsInterface);
 }
 
 function addRecoverable(c: ContractBuilder) {
@@ -201,6 +203,7 @@ function addRecoverable(c: ContractBuilder) {
   c.addOverride("SmartAssetRecoverable", functions.hydrateToken);
   c.addOverride("SmartAssetRecoverable", functions._burn);
   c.addOverride("SmartAssetRecoverable", functions._afterFirstTokenTransfer);
+  c.addOverride("SmartAssetRecoverable", functions.supportsInterface);
 }
 
 function addBurnable(c: ContractBuilder) {
@@ -208,6 +211,8 @@ function addBurnable(c: ContractBuilder) {
     name: "SmartAssetBurnable",
     path: `${arianeeContractsBasePath}/SmartAsset/SmartAssetBurnable.sol`,
   });
+
+  c.addOverride("SmartAssetBurnable", functions.supportsInterface);
 }
 
 function addSoulbound(c: ContractBuilder) {
@@ -219,6 +224,7 @@ function addSoulbound(c: ContractBuilder) {
   c.addOverride("SmartAssetSoulbound", functions.setTokenTransferKey);
   c.addOverride("SmartAssetSoulbound", functions.requestToken);
   c.addOverride("SmartAssetSoulbound",functions._transfer);
+  c.addOverride("SmartAssetSoulbound", functions.supportsInterface);
 } 
 
 function trimOverrides(c: ContractBuilder) {
